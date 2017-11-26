@@ -11,15 +11,17 @@ public class Item {
     private String itemName;
     private String itemDescription;
     private int itemPrice;
+    private String itemUrl;
 
     public Item() {
     }
 
-    public Item(int itemId, String itemName, String itemDescription, int itemPrice) {
+    public Item(int itemId, String itemName, String itemDescription, int itemPrice, String itemUrl) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.itemPrice = itemPrice;
+        this.itemUrl = itemUrl;
     }
 
     public int getItemId() {
@@ -52,5 +54,13 @@ public class Item {
 
     public void setItemPrice(int itemPrice) {
         this.itemPrice = itemPrice;
+    }
+
+    public String getItemUrl() {
+        return itemUrl;
+    }
+
+    public void setItemUrl(String itemUrl) {
+        this.itemUrl = itemUrl;
     }
 }

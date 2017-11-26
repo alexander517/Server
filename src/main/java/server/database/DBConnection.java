@@ -189,6 +189,7 @@ public class DBConnection {
                 item.setItemName(resultSet.getString("itemName"));
                 item.setItemDescription(resultSet.getString("itemDescription"));
                 item.setItemPrice(resultSet.getInt("itemPrice"));
+                item.setItemUrl(resultSet.getString("itemUrl"));
 
                 items.add(item);
             }
