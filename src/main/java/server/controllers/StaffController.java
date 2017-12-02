@@ -41,6 +41,15 @@ public class StaffController {
         return false;
     }
 
+    public boolean createItem(String name, String desc, int price, String url){
+        DBConnection dbConnection = new DBConnection();
+        int result = dbConnection.createItem(name, desc, price, url);
+        if (result>0){
+            return true;
+        }
+        return false;
+    }
+
 }
 
 

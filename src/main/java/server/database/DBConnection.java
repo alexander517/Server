@@ -456,4 +456,20 @@ public class DBConnection {
         }
         return serverToken;
     }
+
+    public int createItem(String itemName, String itemDescription, int itemPrice, String itemUrl){
+        int rowsAffected = 0;
+        try{
+            PreparedStatement createItem = connection.prepareStatement("INSERT into Items (itemName, itemDescription, itemPrice, itemUrl) VALUES (?, ?, ?, ?)");
+            createItem.setString(1, itemName);
+            createItem.setString(2, itemDescription);
+            createItem.setInt(3, itemPrice);
+            createItem.setString(4, itemUrl);
+            rowsAffected = createItem.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
 }

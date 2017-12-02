@@ -7,7 +7,7 @@ import server.database.DBConnection;
 import server.models.Order;
 import server.utility.Encryption;
 import server.utility.Globals;
-
+import server.models.Item;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -44,34 +44,34 @@ public class StaffEndpoint {
                 //encrypt response
                 .entity(encryption.encryptXOR(ordersAsJson))
                 .build();
+
     }
 
-    /**
-     *
-     * @param orderID
-     * @param jsonOrder
-     * @return Response true or false
-     * Changes the isReady boolean value in the database for the specified order (through the id) and returns a true or false entity in the response.
-     */
-    @Secured
-    @POST
-    @Path("/makeReady/{orderid}")
-    public Response makeReady(@PathParam("orderid") int orderID, String jsonOrder) {
-        jsonOrder = encryption.decryptXOR(jsonOrder);
-        Order orderReady = new Gson().fromJson(jsonOrder, Order.class);
-        int status = 500;
-        Boolean isReady = staffController.makeReady(orderID);
+        @Secured
+        @POST
+        @Path("/createItem")
+        public Response createItem(String jsonItem){
+            jsonItem = encryption.encryptXOR(jsonItem);
+            Item itemToBeCreated = new Gson().fromJson(jsonItem, Item.class);
+            int status = 500;
+            boolean result = staffController.createItem(itemToBeCreated.getItemName(), itemToBeCreated.getItemDescription(), itemToBeCreated.getItemPrice(), itemToBeCreated.getItemUrl());
 
-        if (isReady) {
-            status = 200;
-            //Logging for order made ready
-            Globals.log.writeLog(getClass().getName(), this, "Created order with id: " + orderReady.getOrderId(), 0);
+            if (result) {
+                status = 200;
+                //Logging for order created
+                Globals.log.writeLog(getClass().getName(), this, "Created item with id: " + itemToBeCreated.getItemId(), 0);
+
+            } else if (!result) {
+                status = 500;
+                Globals.log.writeLog(getClass().getName(), this, "Internal Server Error 500", 1);
+
+            }
+
+            return Response
+                    .status(status)
+                    .type("plain/text")
+                    //encrypt response to clien before sending
+                    .entity(encryption.encryptXOR("{\"itemCreated\":\"" + result + "\"}"))
+                    .build();
         }
-        return Response
-                .status(status)
-                .type("application/json")
-                //encrypt response to client
-                .entity(encryption.encryptXOR("{\"isReady\":\"" + isReady + "\"}"))
-                .build();
-    }
 }
