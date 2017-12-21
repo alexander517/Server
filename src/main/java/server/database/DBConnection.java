@@ -449,7 +449,7 @@ public class DBConnection {
             tokenExists.setString(1, token);
             rs = tokenExists.executeQuery();
             rs.next();
-            serverToken = rs.getString("tokenStrin");
+            serverToken = rs.getString("tokenString");
 
         } catch (SQLException e) {
             e.printStackTrace();
